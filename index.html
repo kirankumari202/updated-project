@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <title>Document</title>
+  
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope) {
+
+            $scope.list = document.getElementById("list").value;
+
+            $scope.reorderList = function() {
+                var list = $scope.list.split(" ");
+                var reorderedList = [];
+                var i = 0;
+                var j = list.length - 1;
+
+                while (i < j) {
+                    reorderedList.push(list[i]);
+                    reorderedList.push(list[j]);
+                    i++;
+                    j--;
+                }
+                if (i === j) {
+                    reorderedList.push(list[i]);
+                }
+                $scope.reorderedList = reorderedList;
+            }
+
+        });
+    </script>
+     <script>
+        let reorderList = function(head) {
+            if (!head) return null;
+            let slow = head;
+            let fast = head;
+            while (fast && fast.next) {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+            let prev = null;
+            let curr = slow;
+            while (curr) {
+                let next = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = next;
+            }
+            let first = head;
+            let second = prev;
+            while (second.next) {
+                let temp = first.next;
+                first.next = second;
+                first = temp;
+                temp = second.next;
+                second.next = first;
+                second = temp;
+            }
+        };
+    </script> 
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+      
+      <!-- As a heading 
+      <nav class="navbar bg-primary ">
+	<span class="navbar-brand mb-0 h1">Navbar</span>
+      </nav>
+-->
+<nav class="navbar bg-primary">
+	<h1 class="h1">Rearrange List</h1>
+</nav>
+ 
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+		
+                <p>Rearrange a linked list in place</p>
+                <p>Given a singly linked list
+                    <br>
+                    L: L0→L1→…→Ln-1→Ln,
+                    <br>
+                    reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+                    <br>
+                    
+                    For example,
+                    <br>
+                    Given {1,2,3,4}, reorder it to {1,4,2,3}.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <label for="list">List:</label>
+                        <input type="text" class="form-control" id="list" ng-model="list" placeholder="Enter list">
+                    </div>
+                    <button type="button" class="btn btn-default" ng-click="reorderList()">Reorder List</button>
+                </form>
+                <p>Reordered List: {{reorderedList}}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
